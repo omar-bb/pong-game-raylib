@@ -10,8 +10,9 @@ class Ball {
 public:
   static const int DEFAULT_HEIGHT = 10;
   static const int DEFAULT_WIDTH = 10;
-  static constexpr float DEFAULT_SPEED = 10.f;
+  // static constexpr float DEFAULT_SPEED = 5.f;
   static constexpr float START_SPEED = 3.f;
+  // static float DEFAULT_SPEED;
 
 private:
   Rectangle ball_r;
@@ -21,6 +22,12 @@ private:
   // ball's velocities
   float vel_x;
   float vel_y;
+
+  // temp
+  // TODO: delete these!
+  double vel_x_t;
+  double vel_y_t;
+  float DEFAULT_SPEED;
 
   Color color;
 
@@ -32,6 +39,9 @@ public:
   void setPos(float x, float y);
   // set the velocities
   void setVel(float vel_x_p, float vel_y_p);
+  // set default speed
+  // TODO: delete
+  void setDefaultSpeed(float df_speed);
 
   // drawing the ball onto the screen
   void Draw();

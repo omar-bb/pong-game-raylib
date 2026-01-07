@@ -1,12 +1,19 @@
 #include "Ball.hpp"
 
-Ball::Ball(Vector2 pos_t, Color color_t) : vel_x(DEFAULT_SPEED), vel_y(0.0f) {
+// TODO: change back vel_x(DEFAULT_SPEED) to vel_x(START_SPEED)
+Ball::Ball(Vector2 pos_t, Color color_t) : vel_x(START_SPEED), vel_y(0.0f) {
   ball_r.width = DEFAULT_WIDTH;
   ball_r.height = DEFAULT_HEIGHT;
   ball_r.x = pos_t.x;
   ball_r.y = pos_t.y;
 
   color = color_t;
+
+  // temp
+  // TODO: delete
+  vel_x_t = 1.0f;
+  vel_y_t = 1.0f;
+  DEFAULT_SPEED = 10.f;
 }
 
 void Ball::setPos(float x, float y) {
@@ -18,6 +25,10 @@ void Ball::setVel(float vel_x_p, float vel_y_p) {
   vel_x = vel_x_p;
   vel_y = vel_y_p;
 }
+
+// temp
+// TODO: delete
+void Ball::setDefaultSpeed(float df_speed) { DEFAULT_SPEED = df_speed; }
 
 void Ball::Draw() { DrawRectangleRec(ball_r, color); }
 
@@ -47,6 +58,7 @@ void Ball::Spawn(bool right_p) {
 
 // movement handling function for the paddle
 void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
+
   if (CheckCollisionRecs(ball_r, r1)) {
     TraceLog(LOG_INFO,
              TextFormat("ball pos: %f, paddle_pos: %f, ball_prev_pos: %f",
@@ -54,7 +66,7 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
     if (r1.x + r1.width <= prev_pos.x) {
 
       ball_r.x = r1.x + ball_r.width;
-      DrawText("Collision Detected", 10, 10, 17, DARKBLUE);
+      // DrawText("Collision Detected", 10, 10, 17, DARKBLUE);
       // get the ball's center
       double ball_center = ball_r.y + (ball_r.height / 2);
       // get the paddle's center
@@ -71,8 +83,10 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
       TraceLog(LOG_INFO,
                TextFormat("perc: %f, perc_ang: %f°", perc, perc_ang)); // log
       // update the velocities
-      vel_x = DEFAULT_SPEED * cos(DEG2RAD * perc_ang);
-      vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      // vel_x = DEFAULT_SPEED * cos(DEG2RAD * perc_ang);
+      // vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      vel_x_t = cos(DEG2RAD * perc_ang);
+      vel_y_t = sin(DEG2RAD * perc_ang);
     }
   } else if (CheckCollisionRecs(ball_r, r2)) {
     // log the ball's right corner y coordinate and the paddle's left corner x
@@ -83,7 +97,7 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
     if (prev_pos.x + ball_r.width <= r2.x) {
 
       ball_r.x = r2.x - ball_r.width;
-      DrawText("Collision Detected", 10, 10, 17, DARKBLUE);
+      // DrawText("Collision Detected", 10, 10, 17, DARKBLUE);
       // get the ball's center
       double ball_center = ball_r.y + (ball_r.height / 2);
       // get the paddle's center
@@ -96,13 +110,17 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
       double perc_ang = perc * MAX_BOUNCE_ANGLE;
       TraceLog(LOG_INFO, TextFormat("perc: %f, perc_ang: %f°", perc, perc_ang));
       // update the velocities
-      vel_x = DEFAULT_SPEED * -cos(DEG2RAD * perc_ang);
-      vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      // vel_x = DEFAULT_SPEED * -cos(DEG2RAD * perc_ang);
+      // vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      vel_x_t = -cos(DEG2RAD * perc_ang);
+      vel_y_t = sin(DEG2RAD * perc_ang);
     }
   } else if (ball_r.y < 0) {
-    vel_y *= -1;
+    // vel_y *= -1;
+    vel_y_t *= -1.f;
   } else if (ball_r.y + ball_r.height > 480) {
-    vel_y *= -1;
+    // vel_y *= -1;
+    vel_y_t *= -1.f;
   } else if (ball_r.x < -150) {
     gsm.incScoreP2();
     this->Spawn(true);
@@ -111,7 +129,10 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
     this->Spawn();
   }
 
-  DrawText("No collision detected", 10, 10, 17, DARKBLUE);
+  vel_x = DEFAULT_SPEED * vel_x_t;
+  vel_y = DEFAULT_SPEED * vel_y_t;
+
+  // DrawText("No collision detected", 10, 10, 17, DARKBLUE);
 
   // move the ball
   prev_pos.x = ball_r.x;

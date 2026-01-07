@@ -8,7 +8,7 @@ class Paddle {
 public:
   static const int DEFAULT_HEIGHT = 60;
   static const int DEFAULT_WIDTH = 10;
-  static constexpr float DEFAULT_SPEED = 10.f;
+  static constexpr float DEFAULT_SPEED = 5.f;
 
 private:
   Rectangle paddle_r;

@@ -42,12 +42,19 @@ int main(void) {
   // set the window's fps
   SetTargetFPS(FPS);
 
+  // just for debugging purposes
+  // int ball_speed = Ball::DEFAULT_SPEED;
+
+  float df = 5.f;
+
   while (!WindowShouldClose()) {
-    // if (IsKeyPressed(KEY_R))
-    //   ball_p.Spawn(true);
-    // else if (IsKeyPressed(KEY_T))
-    //   ball_p.Spawn(false);
+    if (IsKeyPressed(KEY_R))
+      df += 1;
+    else if (IsKeyPressed(KEY_T))
+      df -= 1;
     // TraceLog(LOG_TRACE, "This is a test");
+
+    ball_p.setDefaultSpeed(df);
 
     paddle_p1.HandleMovement(KEY_UP, KEY_DOWN);
     paddle_p2.HandleMovement(KEY_Q, KEY_A);
@@ -70,6 +77,8 @@ int main(void) {
     }
 
     gsm.DrawScore();
+
+    // DrawText(TextFormat("Ball speed: %d", ball_speed), 10, 10, 17, DARKBLUE);
 
     ///////// testing purposes
     // DrawLine(0.f, 120.f, screenWidth, 120.f, BLACK);
