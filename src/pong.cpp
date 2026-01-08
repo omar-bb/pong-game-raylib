@@ -1,6 +1,7 @@
 #include "Ball.hpp"
 #include "GameStateManager.hpp"
 #include "Paddle.hpp"
+#include "utils.hpp"
 #include <raylib.h>
 
 int main(void) {
@@ -30,10 +31,11 @@ int main(void) {
   Color pb_color = (Color){0x35, 0x31, 0x32, 0xFF}; // 35, 31, 32
   Color bg_color = (Color){0xF3, 0xDF, 0xA2, 0xFF}; // 243, 223, 162
 
-  // define the first player's paddle
+  // initialize the two paddle objects
   Paddle paddle_p1(pos_1, pb_color);
   Paddle paddle_p2(pos_2, pb_color);
 
+  // initialize the ball object
   Ball ball_p(pos_b, pb_color);
 
   // initialize the window
@@ -43,39 +45,29 @@ int main(void) {
   SetTargetFPS(FPS);
 
   while (!WindowShouldClose()) {
-    // if (IsKeyPressed(KEY_R))
-    //   ball_p.Spawn(true);
-    // else if (IsKeyPressed(KEY_T))
-    //   ball_p.Spawn(false);
-    // TraceLog(LOG_TRACE, "This is a test");
 
+    // handle the movmeent of the two paddles
     paddle_p1.HandleMovement(KEY_UP, KEY_DOWN);
     paddle_p2.HandleMovement(KEY_Q, KEY_A);
-
+    // handle the ball movement
     ball_p.Move(paddle_p1.get_rect(), paddle_p2.get_rect(), gsm);
 
     // drawing part
     BeginDrawing();
-    ClearBackground(bg_color); // Set background color
+
+    // set background color
+    ClearBackground(bg_color);
 
     // draw the ball and the two paddles
     ball_p.Draw();
     paddle_p1.Draw();
     paddle_p2.Draw();
+
     // draw the dashed line
-    for (int i = 0; i < screenHeight; i += 30) {
-      lineStartPos_p = {screenWidth / 2.0f, (float)i};
-      lineEndPos_p = {screenWidth / 2.0f, (float)(i + 20)};
-      DrawLineEx(lineStartPos_p, lineEndPos_p, lineThick, BLACK);
-    }
+    DrawVerticalDashedLine(lineStartPos_p, lineEndPos_p, lineThick);
 
+    // draw score on the screen
     gsm.DrawScore();
-
-    ///////// testing purposes
-    // DrawLine(0.f, 120.f, screenWidth, 120.f, BLACK);
-    // DrawLine(0.f, screenHeight - 120.f, screenWidth, screenHeight - 120.f,
-    //          BLACK);
-    /////////
 
     EndDrawing();
   }

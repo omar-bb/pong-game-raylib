@@ -10,7 +10,7 @@ class Ball {
 public:
   static const int DEFAULT_HEIGHT = 10;
   static const int DEFAULT_WIDTH = 10;
-  static constexpr float DEFAULT_SPEED = 10.f;
+  static constexpr float DEFAULT_SPEED = 5.f;
   static constexpr float START_SPEED = 3.f;
 
 private:
