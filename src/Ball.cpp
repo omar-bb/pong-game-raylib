@@ -1,4 +1,5 @@
 #include "Ball.hpp"
+#include "raylib.h"
 
 Ball::Ball(Vector2 pos_t, Color color_t) : vel_x(DEFAULT_SPEED), vel_y(0.0f) {
   ball_r.width = DEFAULT_WIDTH;
@@ -46,7 +47,7 @@ void Ball::Spawn(bool right_p) {
 }
 
 // movement handling function for the paddle
-void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
+void Ball::Move(Rectangle r1, Rectangle r2, GameManager &gm_) {
   if (CheckCollisionRecs(ball_r, r1)) {
     TraceLog(LOG_INFO,
              TextFormat("ball pos: %f, paddle_pos: %f, ball_prev_pos: %f",
@@ -71,8 +72,10 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
       TraceLog(LOG_INFO,
                TextFormat("perc: %f, perc_ang: %f°", perc, perc_ang)); // log
       // update the velocities
-      vel_x = DEFAULT_SPEED * cos(DEG2RAD * perc_ang);
-      vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      // vel_x = DEFAULT_SPEED * cos(DEG2RAD * perc_ang);
+      // vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      this->setVel(DEFAULT_SPEED * cos(DEG2RAD * perc_ang),
+                   DEFAULT_SPEED * sin(DEG2RAD * perc_ang));
     }
   } else if (CheckCollisionRecs(ball_r, r2)) {
     // log the ball's right corner y coordinate and the paddle's left corner x
@@ -96,18 +99,20 @@ void Ball::Move(Rectangle r1, Rectangle r2, GameStateManager &gsm) {
       double perc_ang = perc * MAX_BOUNCE_ANGLE;
       TraceLog(LOG_INFO, TextFormat("perc: %f, perc_ang: %f°", perc, perc_ang));
       // update the velocities
-      vel_x = DEFAULT_SPEED * -cos(DEG2RAD * perc_ang);
-      vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      // vel_x = DEFAULT_SPEED * -cos(DEG2RAD * perc_ang);
+      // vel_y = DEFAULT_SPEED * sin(DEG2RAD * perc_ang);
+      this->setVel(DEFAULT_SPEED * -cos(DEG2RAD * perc_ang),
+                   DEFAULT_SPEED * sin(DEG2RAD * perc_ang));
     }
   } else if (ball_r.y < 0) {
     vel_y *= -1;
   } else if (ball_r.y + ball_r.height > 480) {
     vel_y *= -1;
   } else if (ball_r.x < -150) {
-    gsm.incScoreP2();
+    gm_.incScoreP2();
     this->Spawn(true);
   } else if (ball_r.x > SCREEN_WIDTH + 150) {
-    gsm.incScoreP1();
+    gm_.incScoreP1();
     this->Spawn();
   }
 

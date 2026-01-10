@@ -1,7 +1,7 @@
 #ifndef BALL_HPP
 #define BALL_HPP
 
-#include "GameStateManager.hpp"
+#include "GameManager.hpp"
 #include "constants.hpp"
 #include <random>
 #include <raylib.h>
@@ -10,7 +10,7 @@ class Ball {
 public:
   static const int DEFAULT_HEIGHT = 10;
   static const int DEFAULT_WIDTH = 10;
-  static constexpr float DEFAULT_SPEED = 5.f;
+  static constexpr float DEFAULT_SPEED = 10.f;
   static constexpr float START_SPEED = 3.f;
 
 private:
@@ -40,7 +40,7 @@ public:
   void Spawn(bool right_p = false);
 
   // movement handling function for the paddle
-  void Move(Rectangle r1, Rectangle r2, GameStateManager &gsm);
+  void Move(Rectangle r1, Rectangle r2, GameManager &gm_);
 };
 
 #endif

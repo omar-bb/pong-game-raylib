@@ -4,6 +4,6 @@
 #include <raylib.h>
 
 void DrawVerticalDashedLine(Vector2 lineStartPos_p, Vector2 lineEndPos_p,
-                            float lineThick);
+                            float lineThick, Color color_);
 
 #endif

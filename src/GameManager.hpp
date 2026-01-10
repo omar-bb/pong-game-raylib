@@ -1,10 +1,12 @@
-#ifndef GAMESTATEMANAGER_HPP
-#define GAMESTATEMANAGER_HPP
+#ifndef GAMEMANAGER_HPP
+#define GAMEMANAGER_HPP
 
 #include "constants.hpp"
 #include <raylib.h>
 
-class GameStateManager {
+enum class GameState { MENU, PAUSED, PLAYING, GAMEOVER };
+
+class GameManager {
 private:
   int score_p1;
   int score_p2;
@@ -12,7 +14,7 @@ private:
   bool is_paused;
 
 public:
-  GameStateManager();
+  GameManager();
 
   // set the score of the first player
   void setScoreP1(int sc_p);
@@ -31,7 +33,7 @@ public:
 
   // function to draw score on the screen
   // TODO: make it a standalone function (shouldn't be in this class)
-  void DrawScore();
+  void DrawScore(Color color_);
 };
 
 #endif

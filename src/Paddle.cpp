@@ -1,13 +1,13 @@
 #include "Paddle.hpp"
 
 // constr. of the paddle class
-Paddle::Paddle(Vector2 pos_t, Color color_t) : speed(DEFAULT_SPEED) {
+Paddle::Paddle(Vector2 pos_, Color color_) : speed(DEFAULT_SPEED) {
   paddle_r.width = DEFAULT_WIDTH;
   paddle_r.height = DEFAULT_HEIGHT;
-  paddle_r.x = pos_t.x;
-  paddle_r.y = pos_t.y;
+  paddle_r.x = pos_.x;
+  paddle_r.y = pos_.y;
 
-  color = color_t;
+  color = color_;
 }
 
 // drawing the paddle onto the screen

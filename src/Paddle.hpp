@@ -17,7 +17,7 @@ private:
 
 public:
   // constr. of the paddle class
-  Paddle(Vector2 pos_t, Color color_t = BLACK);
+  Paddle(Vector2 pos_, Color color_ = BLACK);
 
   // drawing the paddle onto the screen
   void Draw();
